@@ -1,4 +1,4 @@
-package main;
+package checkers;
 
 import javafx.scene.canvas.GraphicsContext;
 

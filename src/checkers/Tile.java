@@ -1,4 +1,4 @@
-package main;
+package checkers;
 
 /**
  * Created by mateusz on 1/17/17.

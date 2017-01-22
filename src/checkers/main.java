@@ -1,4 +1,4 @@
-package main;
+package checkers;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -19,7 +19,7 @@ import java.util.Optional;
 
 import javafx.scene.control.Alert.AlertType;
 
-//Checkers controller, responsible for controlling everything
+//checkers controller, responsible for controlling everything
 class Controller {
     private GraphicsContext gc;
 
@@ -58,13 +58,13 @@ class Controller {
                         if(Figure.isSelected!=null){
                             highlightValidMoves(Figure.isSelected.checkValidMoves());
                         }
-                        switch(Checkers.isGameFinished()){
+                        switch(main.isGameFinished()){
                             case 0:{
                                 Platform.exit();
                                 return;
                             }
                             case 1:{
-                                Checkers.reset(gc);
+                                main.reset(gc);
                                 return;
                             }
                         }
@@ -137,7 +137,7 @@ class Controller {
 
 }
 
-public class Checkers extends Application
+public class main extends Application
 {
 
     //checks if game is finished

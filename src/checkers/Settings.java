@@ -1,4 +1,4 @@
-package main;
+package checkers;
 
 /**
  * Created by mateusz on 1/21/17.
@@ -21,7 +21,7 @@ public class Settings {
         Settings.canCaptureBackwards = canCaptureBackwards;
     }
 
-    //when called from Checkers.changeSettings function it switches board size based on which option was selected in choiceBox
+    //when called from checkers.changeSettings function it switches board size based on which option was selected in choiceBox
     static void set(int index, boolean flyingKings, boolean forcedCapture,
                     boolean manPromotedInstantly, boolean canCaptureBackwards) {
         switch (index){
