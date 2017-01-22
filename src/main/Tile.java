@@ -5,10 +5,10 @@ package main;
  */
 class Tile{
     //array of all tiles
-    static Tile tiles[][] = new Tile[Settings.boardSize][Settings.boardSize];
+    static Tile tiles[][];
 
     //width and height of every tile
-    final static int tileDimension = 840/Settings.boardSize;
+    static int tileDimension;
 
     //position of the top left corner of the tile
     private int x, y;
@@ -77,5 +77,8 @@ class Tile{
         this.id = id;
     }
 
-
+    static void setTiles(int boardSize){
+        tiles = new Tile[boardSize][boardSize];
+        tileDimension = 840/boardSize;
+    }
 }

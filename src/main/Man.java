@@ -128,7 +128,7 @@ public class Man extends Figure {
     private void promote(){
         if((position.getY()==0 && !color) || (position.getY()==840-Tile.tileDimension && color)) {
             player.figures.remove(this);
-            player.figures.add(new King(player, this.position, this.color));
+            player.figures.add(new King(this));
         }
     }
 

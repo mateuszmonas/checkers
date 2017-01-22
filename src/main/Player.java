@@ -32,6 +32,12 @@ public class Player {
         int horizontal = 0;
         int vertical = (color) ? 0 : Settings.boardSize-1;
 
+        /*if(color){
+            figures.add(new Man(this, Tile.tiles[1][6], color));
+        }
+        else {
+            figures.add(new Man(this, Tile.tiles[6][1], color));
+        }*/
 
         while (i<Settings.numberOfFigures){
             if(horizontal==Settings.boardSize){

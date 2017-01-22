@@ -2,6 +2,10 @@ package main;
 
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.geometry.Insets;
+import javafx.scene.control.*;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.Group;
@@ -12,15 +16,14 @@ import javafx.scene.input.MouseEvent;
 
 import java.util.ArrayList;
 import java.util.Optional;
-import javafx.scene.control.Alert;
+
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ButtonType;
 
-//Checkers controller, responsible for drawing everything
-class Drawing {
-    GraphicsContext gc;
+//Checkers controller, responsible for controlling everything
+class Controller {
+    private GraphicsContext gc;
 
-    Drawing(GraphicsContext gc){
+    Controller(GraphicsContext gc){
         this.gc=gc;
         gc.setLineWidth(2);
         fillTiles();
@@ -72,7 +75,7 @@ class Drawing {
     }
 
     //highlights tiles that are valid moves
-    void highlightValidMoves(ArrayList<Tile> validMoves){
+    private void highlightValidMoves(ArrayList<Tile> validMoves){
         //I have to copy content of validMoves to new array list because for some reason validMoves becomes empty after i call fillBoard()
         ArrayList<Tile> a = new ArrayList<>();
         a.addAll(validMoves);
@@ -85,8 +88,8 @@ class Drawing {
         }
     }
 
-    //creates a two dimensional array with 64 tiles
-    void fillTiles(){
+    //creates a two dimensional array with all tiles
+    private void fillTiles(){
         int x = 0;
         int y = 0;
         boolean color = true;
@@ -130,20 +133,6 @@ class Drawing {
         if(tile.isColor())gc.setFill(Color.WHITE);
         else gc.setFill(Color.GRAY);
         gc.fillRect(tile.getX(),tile.getY(),tile.getTileDimension(),tile.getTileDimension());
-    }
-
-    private void highlightFigures(){
-        gc.setStroke(Color.AQUA);
-        if(Player.turn) Player.players.get(0).figures.forEach(f -> {
-                if (!f.checkValidMoves().isEmpty()) {
-                    gc.strokeRect(f.position.getX(), f.position.getY(), f.position.getTileDimension(), f.position.getTileDimension());
-                }
-            });
-        else Player.players.get(1).figures.forEach(f -> {
-            if (!f.checkValidMoves().isEmpty()) {
-                gc.strokeRect(f.position.getX(), f.position.getY(), f.position.getTileDimension(), f.position.getTileDimension());
-            }
-        });
     }
 
 }
@@ -200,13 +189,64 @@ public class Checkers extends Application
         return -1;
     }
 
-    //sets all variables to their initial values
-    static Drawing reset(GraphicsContext gc){
+    //opens new window where you can change game settings
+    static void changeSettings(Stage owner, GraphicsContext gc){
 
+        int boardSize;
+        int numberOfFigures;
+
+        Stage dialog = new Stage();
+        dialog.initOwner(owner);
+        dialog.setTitle("Settings");
+        GridPane root = new GridPane();
+        root.setHgap(0);
+        root.setVgap(10);
+        root.setPadding(new Insets(10, 25, 10, 25));
+        Scene scene = new Scene(root, 300, 200);
+        dialog.setScene(scene);
+
+        ChoiceBox choiceBox = new ChoiceBox<>(FXCollections.observableArrayList(
+                "8x8 | 12 figures", "10x10 | 20 figures", "12x12 | 30 figures")
+        );
+        choiceBox.setValue(choiceBox.getItems().get(0));
+        root.add(choiceBox, 0, 0);
+
+        CheckBox flyingKings = new CheckBox("Flying kings");
+        root.add(flyingKings, 0, 1);
+
+        CheckBox forcedCapture = new CheckBox("Forced capture");
+        root.add(forcedCapture, 0, 2);
+
+        CheckBox manPromotedInstantly = new CheckBox("Man promoted instantly");
+        root.add(manPromotedInstantly, 0, 3);
+
+        CheckBox canCaptureBackwards = new CheckBox("Can capture backwards");
+        root.add(canCaptureBackwards, 0, 4);
+
+        Button save = new Button("Save");
+        save.setOnAction(e -> {
+            Settings.set(choiceBox.getItems().indexOf(choiceBox.getValue().toString()), flyingKings.isSelected(), forcedCapture.isSelected(),
+                    manPromotedInstantly.isSelected(), canCaptureBackwards.isSelected());
+            reset(gc);
+            dialog.close();
+            });
+        root.add(save, 0, 5);
+
+        Button cancel = new Button("Cancel");
+        cancel.setOnAction(e -> dialog.close());
+        root.add(cancel, 1, 5);
+
+        dialog.show();
+    }
+
+    //sets all variables to their initial values
+    static Controller reset(GraphicsContext gc){
+
+        Tile.setTiles(Settings.boardSize);
         Player.players.clear();
         Player.turn=false;
 
-        Drawing drawing = new Drawing(gc);
+        Controller controller = new Controller(gc);
 
         //player red
         new Player(true);
@@ -216,7 +256,7 @@ public class Checkers extends Application
         for (Player p : Player.players){
             p.figures.forEach(f -> f.drawFigure(gc));
         }
-        return drawing;
+        return controller;
     }
 
     public void start(Stage stage)
@@ -233,11 +273,12 @@ public class Checkers extends Application
 
         final GraphicsContext gc = canvas.getGraphicsContext2D();
 
-        Settings.set(12, 30, true, true, false, true);
+        Settings.set(8, 12, true, true, false, true);
 
-        Drawing drawing = reset(gc);
+        Controller controller = reset(gc);
 
-        scene.setOnMousePressed(drawing::getClickedTile);
+        scene.setOnMousePressed(controller::getClickedTile);
+        scene.setOnKeyPressed(e -> changeSettings(stage, gc));
 
         stage.show();
     }

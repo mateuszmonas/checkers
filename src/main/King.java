@@ -10,10 +10,12 @@ import javafx.scene.paint.Color;
 public class King extends Figure {
 
     King(Man man){
+        validMoves = new ArrayList<>();
         mustJump = man.mustJump;
         color = man.color;
         position = man.position;
         player = man.player;
+        position.setOccupied(this);
     }
 
     King(Player player, Tile position, boolean color){
@@ -91,20 +93,20 @@ public class King extends Figure {
             }
         }
         else {
-            if (x + 2 < Settings.boardSize && y + 2 < Settings.boardSize && Tile.tiles[x + 2][y + 2].isOccupied() == null &&
-                    Tile.tiles[x + 1][y + 1].isOccupied().color != color) {
+            if (x + 2 < Settings.boardSize && y + 2 < Settings.boardSize && Tile.tiles[x + 1][y + 1].isOccupied() != null
+                    && Tile.tiles[x + 2][y + 2].isOccupied() == null && Tile.tiles[x + 1][y + 1].isOccupied().color != color) {
                 validMoves.add(Tile.tiles[x + 2][y + 2]);
             }
-            if (x - 2 >= 0 && y + 2 < Settings.boardSize && Tile.tiles[x - 2][y + 2].isOccupied() == null &&
-                    Tile.tiles[x - 1][y + 1].isOccupied().color != color) {
+            if (x - 2 >= 0 && y + 2 < Settings.boardSize && Tile.tiles[x - 1][y + 1].isOccupied() != null
+                    && Tile.tiles[x - 2][y + 2].isOccupied() == null && Tile.tiles[x - 1][y + 1].isOccupied().color != color) {
                 validMoves.add(Tile.tiles[x - 2][y + 2]);
             }
-            if (x + 2 < Settings.boardSize && y - 2 >= 0 && Tile.tiles[x + 2][y - 2].isOccupied() == null &&
-                    Tile.tiles[x + 1][y - 1].isOccupied().color != color) {
+            if (x + 2 < Settings.boardSize && y - 2 >= 0  && Tile.tiles[x + 1][y - 1].isOccupied() != null
+                    && Tile.tiles[x + 2][y - 2].isOccupied() == null && Tile.tiles[x + 1][y - 1].isOccupied().color != color) {
                 validMoves.add(Tile.tiles[x + 2][y - 2]);
             }
-            if (x - 2 >= 0 && y - 2 >= 0 && Tile.tiles[x - 2][y - 2].isOccupied() == null &&
-                    Tile.tiles[x - 1][y - 1].isOccupied().color != color) {
+            if (x - 2 >= 0 && y - 2 >= 0  && Tile.tiles[x - 1][y - 1].isOccupied() != null
+                    && Tile.tiles[x - 2][y - 2].isOccupied() == null && Tile.tiles[x - 1][y - 1].isOccupied().color != color) {
                 validMoves.add(Tile.tiles[x - 2][y - 2]);
             }
         }
