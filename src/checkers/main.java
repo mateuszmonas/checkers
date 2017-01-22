@@ -138,8 +138,8 @@ class Controller {
     //true is white
     //false is black
     private void colorTile(Tile tile){
-        if(tile.isColor())gc.setFill(Color.WHITE);
-        else gc.setFill(Color.GRAY);
+        if(tile.isColor())gc.setFill(Color.web("0xffeebb"));
+        else gc.setFill(Color.web("0x558822"));
         gc.fillRect(tile.getX(),tile.getY(),tile.getTileDimension(),tile.getTileDimension());
     }
 

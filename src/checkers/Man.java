@@ -20,15 +20,15 @@ public class Man extends Figure {
 
     //draws a figure in its position
     //player1 figures are red
-    //player2 figures are blue
+    //player2 figures are white
     void drawFigure(GraphicsContext gc){
-        if(color) gc.setFill(Color.RED);
-        else gc.setFill(Color.BLUE);
-        gc.fillOval(position.getX(), position.getY(),Tile.tileDimension,Tile.tileDimension);
+        gc.setFill(Color.web("0x000000"));
+        gc.fillOval(position.getX()+Tile.tileDimension*0.10-2, position.getY()+Tile.tileDimension*0.10,Tile.tileDimension*0.80+4,Tile.tileDimension*0.80+4);
+        gc.setFill((color)?Color.web("0xc40003"):Color.web("0xfff9f4"));
+        gc.fillOval(position.getX()+Tile.tileDimension*0.10, position.getY()+Tile.tileDimension*0.10,Tile.tileDimension*0.80,Tile.tileDimension*0.80);
         if(Player.turn==color && !checkValidMoves().isEmpty()){
-            if(!color) gc.setStroke(Color.RED);
-            else gc.setStroke(Color.BLUE);
-            gc.strokeOval(position.getX(), position.getY(), position.getTileDimension(), position.getTileDimension());
+            gc.setStroke((color)?Color.web("0xfff9f4"):Color.web("0xc40003"));
+            gc.strokeOval(position.getX()+Tile.tileDimension*0.10+1, position.getY()+Tile.tileDimension*0.10+1,Tile.tileDimension*0.80-2,Tile.tileDimension*0.80-2);
         }
     }
 
