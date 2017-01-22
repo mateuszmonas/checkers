@@ -1,5 +1,9 @@
 package checkers;
 
+
+import javafx.geometry.Rectangle2D;
+import javafx.stage.Screen;
+
 /**
  * Created by mateusz on 1/17/17.
  */
@@ -79,6 +83,6 @@ class Tile{
 
     static void setTiles(int boardSize){
         tiles = new Tile[boardSize][boardSize];
-        tileDimension = 840/boardSize;
+        tileDimension = (int)(Screen.getPrimary().getVisualBounds().getMaxY()-100 - ((Screen.getPrimary().getVisualBounds().getMaxY()-100)%120))/boardSize;
     }
 }
