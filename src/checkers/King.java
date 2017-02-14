@@ -17,11 +17,20 @@ public class King extends Figure {
         player = man.player;
         position.setOccupied(this);
     }
+    
+    King(Player player, Tile position, boolean color){
+        this.player = player;
+        validMoves = new ArrayList<>();
+        this.position = position;
+        this.color = color;
+        position.setOccupied(this);
+        
+    }
 
     //draws a figure in its position
     //player1 figures are red
-    //player2 figures are blue
-    //Kings have smaller brown circle inside
+    //player2 figures are white
+    //Kings have smaller circle inside
     void drawFigure(GraphicsContext gc){
         gc.setFill(Color.web("0x000000"));
         gc.fillOval(position.getX()+Tile.tileDimension*0.10-2, position.getY()+Tile.tileDimension*0.10,Tile.tileDimension*0.80+4,Tile.tileDimension*0.80+4);
@@ -29,7 +38,9 @@ public class King extends Figure {
         gc.fillOval(position.getX()+Tile.tileDimension*0.10, position.getY()+Tile.tileDimension*0.10,Tile.tileDimension*0.80,Tile.tileDimension*0.80);
         gc.setFill((color)?Color.web("0xfff9f4"):Color.web("0xc40003"));
         gc.fillOval(position.getX()+Tile.tileDimension*0.30, position.getY()+Tile.tileDimension*0.30,Tile.tileDimension*0.40,Tile.tileDimension*0.40);
-        if(Player.turn==color && !checkValidMoves().isEmpty()){
+        //highlights figure if it is possible for it to move
+        //it has to check if the selected figure must jump or else it will highlight figures that cant possibly move
+        if(Player.turn==color && !checkValidMoves().isEmpty() && !(Figure.isSelected!=null && !Figure.isSelected.equals(this) && Figure.isSelected.mustJump)){
             gc.setStroke((color)?Color.web("0xfff9f4"):Color.web("0xc40003"));
             gc.strokeOval(position.getX()+Tile.tileDimension*0.10+1, position.getY()+Tile.tileDimension*0.10+1,Tile.tileDimension*0.80-2,Tile.tileDimension*0.80-2);
         }
@@ -109,7 +120,7 @@ public class King extends Figure {
     ArrayList<Tile> checkValidMoves(){
         validMoves.clear();
         //if Settings.forcedCapture is true it checks if any of players pieces can capture something
-        if(Settings.forcedCapture) {
+        if(Settings.forcedCapture || mustJump) {
             //if any of the players pieces can capture something, but this piece is not one of them it returns empty array list
             if (player.areJumpsPossible() && checkValidJumps().isEmpty()) {
                 return validMoves;

@@ -26,7 +26,9 @@ public class Man extends Figure {
         gc.fillOval(position.getX()+Tile.tileDimension*0.10-2, position.getY()+Tile.tileDimension*0.10,Tile.tileDimension*0.80+4,Tile.tileDimension*0.80+4);
         gc.setFill((color)?Color.web("0xc40003"):Color.web("0xfff9f4"));
         gc.fillOval(position.getX()+Tile.tileDimension*0.10, position.getY()+Tile.tileDimension*0.10,Tile.tileDimension*0.80,Tile.tileDimension*0.80);
-        if(Player.turn==color && !checkValidMoves().isEmpty()){
+        //highlights figure if it is possible for it to move
+        //it has to check if the selected figure must jump or else it will highlight figures that cant possibly move
+        if(Player.turn==color && !checkValidMoves().isEmpty() && !(Figure.isSelected!=null && !Figure.isSelected.equals(this) && Figure.isSelected.mustJump)){
             gc.setStroke((color)?Color.web("0xfff9f4"):Color.web("0xc40003"));
             gc.strokeOval(position.getX()+Tile.tileDimension*0.10+1, position.getY()+Tile.tileDimension*0.10+1,Tile.tileDimension*0.80-2,Tile.tileDimension*0.80-2);
         }

@@ -32,12 +32,18 @@ public class Player {
         int horizontal = 0;
         int vertical = (color) ? 0 : Settings.boardSize-1;
 
-        /*if(color){
-            figures.add(new Man(this, Tile.tiles[1][6], color));
+        /*
+        //Used to place figures in predefined spots while debugging
+        if(color){
+            figures.add(new Man(this, Tile.tiles[0][3], color));
+            figures.add(new Man(this, Tile.tiles[1][2], color));
+            figures.add(new King(this, Tile.tiles[4][1], color));
         }
         else {
-            figures.add(new Man(this, Tile.tiles[6][1], color));
-        }*/
+            figures.add(new Man(this, Tile.tiles[1][4], color));
+            figures.add(new Man(this, Tile.tiles[2][3], color));
+        }
+        */
 
         while (i<Settings.numberOfFigures){
             if(horizontal==Settings.boardSize){
